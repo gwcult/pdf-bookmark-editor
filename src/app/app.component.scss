@@ -1,0 +1,20 @@
+.page-input {
+    max-width: 90px;
+}
+
+.pdf-loaded-content {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.pdf-viewer-container {
+    height: calc(100vh - 58px);
+    display: flex;
+}
+
+.bookmark-side-panel {
+    flex: 0 0 400px;
+    max-height: 100%;
+    overflow-y: auto;
+}

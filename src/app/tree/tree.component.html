@@ -1,0 +1,11 @@
+<ul class="list-group list-group-flush">
+    <li class="list-group-item" *ngFor="let item of tree?.children">
+        <app-tree-item [item]="item" [level]="level"></app-tree-item>
+    </li>
+</ul>
+<div  *ngIf="!tree?.children?.length && level === 0" class="d-flex align-items-center flex-column p-2">
+    <p class="text-light text-center fst-italic">
+        There are currently no bookmarks.
+    </p>
+    <button class="btn btn-primary btn-sm" (click)="addFirst()">Add The First One</button>
+</div>
