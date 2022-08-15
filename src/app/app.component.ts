@@ -50,9 +50,12 @@ export class AppComponent implements OnInit {
 
   async loadFromUploadEvent(event: Event) {
     const target = event.target as HTMLInputElement;
-    const file = (target.files as FileList)[0] as File;
-    const buffer = await readAsArrayBuffer(file);
-    await this.loadFromBuffer(buffer);
+    if (target && target.files && target.files.length) {
+      const file = (target.files as FileList)[0] as File;
+      target.value = null as any;
+      const buffer = await readAsArrayBuffer(file);
+      await this.loadFromBuffer(buffer);
+    }
   }
 
   async loadFromBuffer(buffer: ArrayBuffer) {

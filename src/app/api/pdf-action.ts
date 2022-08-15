@@ -9,9 +9,7 @@ export class PDFAction {
     constructor(
         readonly ref: PDFRef,
         readonly dict: PDFDict,
-    ) {
-        console.log(dict);
-    }
+    ) {}
 
     getType(): ActionTypes | undefined {
         const name = this.dict.lookupMaybe(Keys.ActionType, PDFName);

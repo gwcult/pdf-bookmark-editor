@@ -15,7 +15,6 @@ export class PDFOutlineService {
     getOutlineRoot(): PDFOutlineItem | undefined {
         const ref = this.pdf.catalog.get(Keys.Outline) as PDFRef;
         const dict = this.pdf.catalog.lookupMaybe(Keys.Outline, PDFDict);
-        console.log(dict);
         return dict ? new PDFOutlineItem(ref, dict) : undefined;
     }
 
