@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { AppComponent } from '../app.component';
 import { BookmarkItem } from '../pdf-bookmark.model';
 
 @Component({
@@ -12,7 +13,7 @@ export class BookmarkEditModalComponent implements OnInit {
   form: FormGroup = this.createForm();
   editMode = false;
 
-  constructor(public modal: NgbActiveModal, private fb: FormBuilder) { }
+  constructor(public modal: NgbActiveModal, private fb: FormBuilder, private app: AppComponent) { }
 
   ngOnInit(): void {
   }
@@ -28,6 +29,7 @@ export class BookmarkEditModalComponent implements OnInit {
   }
 
   submit() {
+    this.form.markAllAsTouched();
     if (this.form.valid) {
       this.modal.close(this.form.value);
     }
@@ -35,8 +37,12 @@ export class BookmarkEditModalComponent implements OnInit {
 
   createForm() {
     return this.fb.group({
-      title: ['', Validators.minLength(1)],
-      page: [null, Validators.min(1)],
+      title: [null, Validators.required],
+      page: [null, [Validators.min(1), Validators.max(this.app.getPageCount())]],
     });
+  }
+
+  get page() {
+    return this.form.get('page');
   }
 }

@@ -1,0 +1,11 @@
+<ng-container *ngIf="form.touched || form.dirty">
+    <div class="invalid-feedback" *ngIf="errors.required">
+        Field is required.
+    </div>
+    <div class="invalid-feedback" *ngIf="errors.min">
+        Value must be greater than or equal to {{errors.min.min}}.
+    </div>
+    <div class="invalid-feedback" *ngIf="errors.max">
+        Value must be less than or equal to {{errors.max.max}}.
+    </div>
+</ng-container>

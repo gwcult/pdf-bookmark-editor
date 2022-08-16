@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import * as pdfLib from "pdf-lib";
 import { readAsArrayBuffer } from 'promise-file-reader';
 import { saveAs } from 'file-saver';
@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
     private http: HttpClient, 
     private route: ActivatedRoute, 
     private router: Router,
+    private injector: Injector,
     private changeDetector: ChangeDetectorRef,
     private modalService: NgbModal, 
   ) {}
@@ -73,7 +74,7 @@ export class AppComponent implements OnInit {
   }
 
   createBookmark(location: InsertionLocation) {
-    const ref = this.modalService.open(BookmarkEditModalComponent);
+    const ref = this.modalService.open(BookmarkEditModalComponent, {injector: this.injector});
     const instance = ref.componentInstance as BookmarkEditModalComponent;
     instance.create();
     ref.closed.subscribe((data: Bookmark) => {
@@ -83,7 +84,7 @@ export class AppComponent implements OnInit {
   }
 
   editBookmark(item: BookmarkItem) {
-    const ref = this.modalService.open(BookmarkEditModalComponent);
+    const ref = this.modalService.open(BookmarkEditModalComponent, {injector: this.injector});
     const instance = ref.componentInstance as BookmarkEditModalComponent;
     instance.edit(item);
     ref.closed.subscribe((data: Bookmark) => {
