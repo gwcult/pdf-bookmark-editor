@@ -9,31 +9,14 @@
 </div>
 <ng-template #pdfLoaded>
     <div class="pdf-loaded-content">
-        <div>
-            <nav class="navbar navbar-dark bg-dark navbar-expand">
-                <div class="container-fluid">
-                    <div class="collapse navbar-collapse" [ngbCollapse]="isMenuCollapsed">
-                        <ul class="navbar-nav me-auto">
-                            <li class="nav-item">
-                                <a class="nav-link btn" (click)="fileInput.click()">Load</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn" (click)="save()">Save</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <input class="form-control page-input" type="number" [(ngModel)]="page" aria-label="Search">
-                </div>
-            </nav>
-        </div>
+        <app-navbar></app-navbar>
         <div class="pdf-viewer-container">
             <div class="w-100">
                 <pdf-viewer [src]="pdfSrc" [(page)]="page" [original-size]="true" [fit-to-page]="true"
                 [show-borders]="false" class="w-100 h-100 bg-light">
             </pdf-viewer>
             </div>
-
-            <div class="bookmark-side-panel bg-dark">
+            <div class="bookmark-side-panel bg-dark d-none d-lg-block">
                 <app-tree [tree]="bookmarkTree"></app-tree>
             </div>
         </div>

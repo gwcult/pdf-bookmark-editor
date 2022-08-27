@@ -7,10 +7,11 @@ import { InsertionLocation, PDFBookmarkService } from './pdf-bookmark.service';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { BookmarkEditModalComponent } from './bookmark-edit-modal/bookmark-edit-modal.component';
 import { PDFRef } from "pdf-lib";
 import { BookmarkDeletionModalComponent } from './bookmark-deletion-modal/bookmark-deletion-modal.component';
+import { BookmarkTreeModalComponent } from './bookmark-tree-modal/bookmark-tree-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -20,9 +21,9 @@ import { BookmarkDeletionModalComponent } from './bookmark-deletion-modal/bookma
 export class AppComponent implements OnInit {
   service!: PDFBookmarkService;
   pdfSrc!: string;
-  isMenuCollapsed = false;
   page = 1;
   pdf!: pdfLib.PDFDocument;
+  bookmarkModal?: NgbModalRef;
 
   bookmarkTree!: BookmarkTree;
 
@@ -103,6 +104,9 @@ export class AppComponent implements OnInit {
 
   goPage(page?: number) {
     if (page) {
+      if (this.bookmarkModal) {
+        this.bookmarkModal.close();
+      }
       this.page = page;
       this.changeDetector.detectChanges();
     }
@@ -110,5 +114,9 @@ export class AppComponent implements OnInit {
 
   getPageCount() {
     return this.pdf.getPageCount();
+  }
+
+  openBookmarkDialog() {
+    this.bookmarkModal = this.modalService.open(BookmarkTreeModalComponent, {injector: this.injector});
   }
 }
