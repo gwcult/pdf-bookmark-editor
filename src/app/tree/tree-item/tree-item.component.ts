@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { InsertRelationType } from 'src/app/api/pdf-outline';
 import { AppComponent } from 'src/app/app.component';
 import { BookmarkItem } from 'src/app/pdf-bookmark.model';
@@ -11,26 +11,33 @@ import { BookmarkItem } from 'src/app/pdf-bookmark.model';
 export class TreeItemComponent implements OnInit {
   @Input() item!: BookmarkItem;
   @Input() level!: number;
-  collapsed = true;
 
-  constructor(private appComponent: AppComponent) { }
+  constructor(private app: AppComponent) { }
 
   ngOnInit(): void {
   }
 
+  switchCollapsed() {
+    this.app.switchBookmarkCollapsing(this.item.ref);
+  }
+
+  get collapsed(): boolean {
+    return this.app.getBookmarkCollapsing(this.item.ref);
+  }
+
   goPage(page?: number) {
-    this.appComponent.goPage(page);
+    this.app.goPage(page);
   }
 
   add(relType: InsertRelationType) {
-    this.appComponent.createBookmark({targetRef: this.item.ref, relType});
+    this.app.createBookmark({targetRef: this.item.ref, relType});
   }
 
   edit() {
-    this.appComponent.editBookmark(this.item);
+    this.app.editBookmark(this.item);
   }
 
   delete() {
-    this.appComponent.deleteBookmark(this.item.ref);
+    this.app.deleteBookmark(this.item.ref);
   }
 }

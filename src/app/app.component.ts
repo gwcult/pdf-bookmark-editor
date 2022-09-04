@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, Injector, OnInit } from '@angular/core';
 import * as pdfLib from "pdf-lib";
 import { readAsArrayBuffer } from 'promise-file-reader';
 import { saveAs } from 'file-saver';
@@ -27,13 +27,14 @@ export class AppComponent implements OnInit {
 
   bookmarkTree!: BookmarkTree;
 
+  private collapsedBookmarks: Map<string, boolean> = new Map();
+
   constructor(
     private http: HttpClient, 
     private route: ActivatedRoute, 
-    private router: Router,
     private injector: Injector,
     private changeDetector: ChangeDetectorRef,
-    private modalService: NgbModal, 
+    private modalService: NgbModal,
   ) {}
 
   ngOnInit(): void {
@@ -64,6 +65,7 @@ export class AppComponent implements OnInit {
     this.pdf = await pdfLib.PDFDocument.load(buffer);
     this.pdfSrc = URL.createObjectURL(new Blob([buffer]));
     this.service = new PDFBookmarkService(this.pdf);
+    this.collapsedBookmarks.clear();
     this.bookmarkTree = this.service.getBookmarkTreeRoot();
   }
 
@@ -110,6 +112,14 @@ export class AppComponent implements OnInit {
       this.page = page;
       this.changeDetector.detectChanges();
     }
+  }
+
+  switchBookmarkCollapsing(ref: PDFRef) {
+    this.collapsedBookmarks.set(ref.tag, !this.collapsedBookmarks.get(ref.tag));
+  }
+
+  getBookmarkCollapsing(ref: PDFRef) {
+    return !!this.collapsedBookmarks.get(ref.tag);
   }
 
   getPageCount() {

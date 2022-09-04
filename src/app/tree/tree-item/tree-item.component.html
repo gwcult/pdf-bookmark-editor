@@ -1,5 +1,5 @@
 <div [class]="['list-group-content', 'list-group-content-level-' + level]">
-    <button class="btn btn-dark btn-sm" [class.hidden]="!item.children.length" (click)="collapsed = !collapsed">
+    <button class="btn btn-dark btn-sm" [class.hidden]="!item.children.length" (click)="switchCollapsed()">
         <i [class.bi-chevron-right]="collapsed" [class.bi-chevron-down]="!collapsed"></i>
     </button>
     <button class="btn btn-dark btn-sm text-start w-100 ps-0 m-1" (click)="goPage(item.page)">
