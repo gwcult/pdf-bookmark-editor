@@ -12,6 +12,7 @@ import { BookmarkEditModalComponent } from './bookmark-edit-modal/bookmark-edit-
 import { PDFRef } from "pdf-lib";
 import { BookmarkDeletionModalComponent } from './bookmark-deletion-modal/bookmark-deletion-modal.component';
 import { BookmarkTreeModalComponent } from './bookmark-tree-modal/bookmark-tree-modal.component';
+import { ErrorModalComponent } from './error-modal/error-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -24,8 +25,8 @@ export class AppComponent implements OnInit {
   page = 1;
   pdf!: pdfLib.PDFDocument;
   bookmarkModal?: NgbModalRef;
-
   bookmarkTree!: BookmarkTree;
+  loading = false;
 
   private collapsedBookmarks: Map<string, boolean> = new Map();
 
@@ -46,27 +47,42 @@ export class AppComponent implements OnInit {
     });
   }
 
-  async loadFromUrl(url: string) {
-    const buffer = await firstValueFrom(this.http.get(url, {responseType: 'arraybuffer'}));
-    await this.loadFromBuffer(buffer);
+  loadFromUrl(url: string) {
+    const buffer = firstValueFrom(this.http.get(url, {responseType: 'arraybuffer'}));
+    this.loadFromBuffer(buffer);
   }
 
-  async loadFromUploadEvent(event: Event) {
+  loadFromUploadEvent(event: Event) {
     const target = event.target as HTMLInputElement;
     if (target && target.files && target.files.length) {
       const file = (target.files as FileList)[0] as File;
       target.value = null as any;
-      const buffer = await readAsArrayBuffer(file);
-      await this.loadFromBuffer(buffer);
+      const buffer = readAsArrayBuffer(file);
+      this.loadFromBuffer(buffer);
     }
   }
 
-  async loadFromBuffer(buffer: ArrayBuffer) {
-    this.pdf = await pdfLib.PDFDocument.load(buffer);
-    this.pdfSrc = URL.createObjectURL(new Blob([buffer]));
-    this.service = new PDFBookmarkService(this.pdf);
-    this.collapsedBookmarks.clear();
-    this.bookmarkTree = this.service.getBookmarkTreeRoot();
+  async loadFromBuffer(promiseBuffer: Promise<ArrayBuffer>) {
+    this.loading = true;
+    try {
+      
+      const buffer = await promiseBuffer;
+      this.pdf = await pdfLib.PDFDocument.load(buffer);
+      this.pdfSrc = URL.createObjectURL(new Blob([buffer]));
+      this.service = new PDFBookmarkService(this.pdf);
+      this.collapsedBookmarks.clear();
+      this.bookmarkTree = this.service.getBookmarkTreeRoot();
+    } catch (error: any) {
+      this.reportError(error);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  private reportError(error: any) {
+    const ref = this.modalService.open(ErrorModalComponent, {injector: this.injector});
+    const instance = ref.componentInstance as ErrorModalComponent;
+    instance.setError(error);
   }
 
   async save() {

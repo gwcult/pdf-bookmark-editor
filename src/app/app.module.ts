@@ -14,6 +14,8 @@ import { BookmarkDeletionModalComponent } from './bookmark-deletion-modal/bookma
 import { InvalidFeedbackComponent } from './invalid-feedback/invalid-feedback.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { BookmarkTreeModalComponent } from './bookmark-tree-modal/bookmark-tree-modal.component';
+import { ErrorModalComponent } from './error-modal/error-modal.component';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { BookmarkTreeModalComponent } from './bookmark-tree-modal/bookmark-tree-
     BookmarkDeletionModalComponent,
     InvalidFeedbackComponent,
     NavbarComponent,
-    BookmarkTreeModalComponent
+    BookmarkTreeModalComponent,
+    ErrorModalComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

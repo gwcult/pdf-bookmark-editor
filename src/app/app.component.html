@@ -1,4 +1,4 @@
-<div class="container" *ngIf="!pdfSrc else pdfLoaded">
+<div class="container" *ngIf="!pdfSrc && !loading else pdfLoaded">
     <div class="p-5 mt-4 bg-light rounded-3">
         <h1 class="display-5 fw-bold">PDF Bookmark Editor 100% Free</h1>
         <p class="fs-4">
@@ -11,14 +11,21 @@
     <div class="pdf-loaded-content">
         <app-navbar></app-navbar>
         <div class="pdf-viewer-container">
-            <div class="w-100">
-                <pdf-viewer [src]="pdfSrc" [(page)]="page" [original-size]="true" [fit-to-page]="true"
-                [show-borders]="false" class="w-100 h-100 bg-light">
-            </pdf-viewer>
+            <div *ngIf="loading"  class="spinner-container">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
             </div>
-            <div class="bookmark-side-panel bg-dark d-none d-lg-block">
-                <app-tree [tree]="bookmarkTree"></app-tree>
-            </div>
+            <ng-container *ngIf="!loading">
+                <div class="w-100">
+                    <pdf-viewer [src]="pdfSrc" [(page)]="page" [original-size]="true" [fit-to-page]="true"
+                        [show-borders]="false" class="w-100 h-100 bg-light">
+                    </pdf-viewer>
+                </div>
+                <div class="bookmark-side-panel bg-dark d-none d-lg-block">
+                    <app-tree [tree]="bookmarkTree"></app-tree>
+                </div>
+            </ng-container>
         </div>
     </div>
 </ng-template>

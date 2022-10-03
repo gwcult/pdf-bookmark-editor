@@ -1,24 +1,23 @@
-<div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">
+<app-modal>
+    <ng-template #title>
         <ng-template [ngIf]="editMode" [ngIfElse]="createHeader">Edit Bookmark</ng-template>
         <ng-template #createHeader>Create Bookmark</ng-template>
-    </h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
-</div>
-<div class="modal-body">
-    <form [formGroup]="form" id="bookmarkForm" (ngSubmit)="submit()">
-        <div class="mb-3">
-            <label for="titleInput" class="form-label">Title</label>
-            <input type="text" formControlName="title" class="form-control" id="titleInput"/>
-            <app-invalid-feedback name="title"></app-invalid-feedback>
-          </div>
-          <div class="mb-3">
-            <label for="pageInput" class="form-label">Page</label>
-            <input type="number" formControlName="page" class="form-control" id="pageInput" step="1"/>
-            <app-invalid-feedback name="page"></app-invalid-feedback>
-          </div>
-    </form>
-</div>
-<div class="modal-footer">
-    <button type="submit" form="bookmarkForm" class="btn btn-outline-dark">Save</button>
-</div>
+    </ng-template>
+    <ng-template #body>
+        <form [formGroup]="form" id="bookmarkForm" (ngSubmit)="submit()">
+            <div class="mb-3">
+                <label for="titleInput" class="form-label">Title</label>
+                <input type="text" formControlName="title" class="form-control" id="titleInput"/>
+                <app-invalid-feedback name="title"></app-invalid-feedback>
+              </div>
+              <div class="mb-3">
+                <label for="pageInput" class="form-label">Page</label>
+                <input type="number" formControlName="page" class="form-control" id="pageInput" step="1"/>
+                <app-invalid-feedback name="page"></app-invalid-feedback>
+              </div>
+        </form>
+    </ng-template>
+    <ng-template #footer>
+        <button type="submit" form="bookmarkForm" class="btn btn-outline-dark">Save</button>
+    </ng-template>
+</app-modal>

@@ -1,0 +1,13 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    {{ title }}
+    <ng-template [ngTemplateOutlet]="titleTemplate"></ng-template>
+  </h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+</div>
+<div class="modal-body">
+  <ng-template [ngTemplateOutlet]="bodyTemplate"></ng-template>
+</div>
+<div class="modal-footer" *ngIf="footerTemplate">
+  <ng-template [ngTemplateOutlet]="footerTemplate"></ng-template>
+</div>
